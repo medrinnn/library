@@ -3,11 +3,10 @@ const myLibrary = [];
 const dialog = document.querySelector("#dialog");
 const addBtn = document.querySelector(".add");
 const closeBtn = document.querySelector(".closeBtn");
+const form = document.querySelector("#form");
+const booksDiv = document.querySelector(".books");
 
 function Book(title, author, pages, status) {
-    if (!new.target) {
-        throw Error("You must use the 'new' operator to call the constructor");
-    }
     this.title = title;
     this.author = author;
     this.pages = pages;
@@ -15,55 +14,77 @@ function Book(title, author, pages, status) {
     this.id = crypto.randomUUID();
 }
 
-function addBookToLibrary() {
-    myLibrary.push(new Book(title, author, pages, status));
+function addBookToLibrary(title, author, pages, status) {
+    const book = new Book(title, author, pages, status);
+    myLibrary.push(book);
+    displayBooks();
+}
+
+function removeBook(id) {
+    const index = myLibrary.findIndex(book => book.id === id);
+    myLibrary.splice(index, 1);
     displayBooks();
 }
 
 function displayBooks() {
-    myLibrary.forEach((book) => {
+    booksDiv.innerHTML = "";
+
+    myLibrary.forEach(book => {
         const card = document.createElement("div");
         card.className = "book-card";
-        
-        const cardtitle = document.createElement("p");
-        cardtitle.className = "book-title";
-        cardtitle.innerText = Book.title;
-        
-        const cardauthor = document.createElement("p");
-        cardauthor.className = "book-author";
-        cardauthor.innerText = Book.author;
 
-        const cardpages = document.createElement("p");
-        cardpages.className = "book-pages";
-        cardpages.innerText = "Pages: " + Book.pages;
+        const title = document.createElement("p");
+        title.textContent = "Title: " + book.title;
 
-        const cardstatus = document.createElement("p");
-        cardpages.className = "book-status";
-        cardpages.innerText = "Status: " + Book.status;
+        const author = document.createElement("p");
+        author.textContent = "Author: " + book.author;
 
-        const closeBtn = document.createElement("button");
-        
-        closeBtn.innerText = "X";
-        closeBtn.onclick = () => removeBook(book.id);
+        const pages = document.createElement("p");
+        pages.textContent = "Pages: " + book.pages;
 
-        card.appendChild(cardtitle);
-        card.appendChild(cardauthor);
-        card.appendChild(cardpages);
-        card.appendChild(cardstatus);
-        card.appendChild(closeBtn);
-    })
+        const status = document.createElement("p");
+        status.textContent = "Status: " + (book.status ? "Read" : "Not read");
+
+        const removeBtn = document.createElement("button");
+        removeBtn.textContent = "X";
+        removeBtn.onclick = function () {
+            removeBook(book.id);
+        };
+
+        card.appendChild(title);
+        card.appendChild(author);
+        card.appendChild(pages);
+        card.appendChild(status);
+        card.appendChild(removeBtn);
+
+        booksDiv.appendChild(card);
+    });
 }
 
-window.onload = () => {
-    addBookToLibrary("Rich Dad Poor Dad", "Robert kiyosaki", 451, false);
-    addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, true);
-}
+/* EVENTS */
 
-addBtn.addEventListener("click", () => {
+addBtn.onclick = function () {
     dialog.showModal();
-     myLibrary.push(new Book(title, author, pages, status));
-});
+};
 
-closeBtn.addEventListener("click", () => {
-  dialog.close();
-});
+closeBtn.onclick = function () {
+    dialog.close();
+};
+
+form.onsubmit = function (e) {
+    e.preventDefault();
+
+    const title = document.querySelector("#title").value;
+    const author = document.querySelector("#author").value;
+    const pages = document.querySelector("#pages").value;
+    const status = document.querySelector("#status").checked;
+
+    addBookToLibrary(title, author, pages, status);
+
+    form.reset();
+    dialog.close();
+};
+
+/* DEFAULT BOOKS */
+addBookToLibrary("Rich Dad Poor Dad", "Robert Kiyosaki", 451, false);
+addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, true);

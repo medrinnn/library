@@ -2,33 +2,37 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Library</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1 class="title">Library</h1>
-    <div class="container"><button class="add">Add</button></div>
-    <div class="book-card">
-        <p class="book-title">Name: Rich Dad Poor Dad</p>
-        <p class="book-author">Author: Robert Kiyosaki</p>
-        <p class="book-pages">Pages: 144</p>
-        <p class="book-readstatus">Status: Read</p>
-        <button class="book-remove">X</button>
-    </div>
 
-    <dialog id="dialog">
-        <form>
-            <input type="text" id="title" placeholder="Title" required>
-            <input type="text" id="author" placeholder="Author" required>
-            <input type="number" id="pages" placeholder="Pages" required>
-            <label for="status">Did You read it ?</label>
-            <input type="checkbox" id="status" />
-            <button class="submit-btn" type="submit">Add</button>
-            <button class="closeBtn">X</button>
-        </form>
-    </dialog>
+<h1 class="title">Library</h1>
 
-    <script src="script.js"></script>
+<div class="top">
+    <button class="add">Add Book</button>
+</div>
+
+<div class="books"></div>
+
+<dialog id="dialog">
+    <form id="form">
+        <input type="text" id="title" placeholder="Title" required>
+        <input type="text" id="author" placeholder="Author" required>
+        <input type="number" id="pages" placeholder="Pages" required>
+
+        <label>
+            Read?
+            <input type="checkbox" id="status">
+        </label>
+
+        <div class="buttons">
+            <button type="submit">Add</button>
+            <button type="button" class="closeBtn">Cancel</button>
+        </div>
+    </form>
+</dialog>
+
+<script src="script.js"></script>
 </body>
 </html>
