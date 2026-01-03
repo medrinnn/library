@@ -6,24 +6,26 @@ const closeBtn = document.querySelector(".closeBtn");
 const form = document.querySelector("#form");
 const booksDiv = document.querySelector(".books");
 
-function Book(title, author, pages, status) {
-    this.title = title;
-    this.author = author;
-    this.pages = pages;
-    this.status = status;
-    this.id = crypto.randomUUID();
-}
+class Book {
+    constructor(title, author, pages, status) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+        this.status = status;
+        this.id = crypto.randomUUID();        
+    }
 
-function addBookToLibrary(title, author, pages, status) {
-    const book = new Book(title, author, pages, status);
-    myLibrary.push(book);
-    displayBooks();
-}
+    addToLibrary() {
+        const book = new Book(title, author, pages, status);
+        myLibrary.push(book);
+        displayBooks();
+    }
 
-function removeBook(id) {
-    const index = myLibrary.findIndex(book => book.id === id);
-    myLibrary.splice(index, 1);
-    displayBooks();
+    removeBook(id) {
+        const index = myLibrary.findIndex(book => book.id === id);
+        myLibrary.splice(index, 1);
+        displayBooks();
+    }
 }
 
 function displayBooks() {
@@ -48,7 +50,7 @@ function displayBooks() {
         const removeBtn = document.createElement("button");
         removeBtn.textContent = "X";
         removeBtn.onclick = function () {
-            removeBook(book.id);
+            Book.removeBook(book.id);
         };
 
         card.appendChild(title);
@@ -60,8 +62,6 @@ function displayBooks() {
         booksDiv.appendChild(card);
     });
 }
-
-/* EVENTS */
 
 addBtn.onclick = function () {
     dialog.showModal();
@@ -79,12 +79,12 @@ form.onsubmit = function (e) {
     const pages = document.querySelector("#pages").value;
     const status = document.querySelector("#status").checked;
 
-    addBookToLibrary(title, author, pages, status);
+    Book.addToLibrary(title, author, pages, status);
 
     form.reset();
     dialog.close();
 };
 
 /* DEFAULT BOOKS */
-addBookToLibrary("Rich Dad Poor Dad", "Robert Kiyosaki", 451, false);
-addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, true);
+Book.addToLibrary("Rich Dad Poor Dad", "Robert Kiyosaki", 451, false);
+Book.addToLibrary("The Hobbit", "J.R.R. Tolkien", 310, true);
